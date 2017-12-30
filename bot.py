@@ -20,16 +20,28 @@ def bot_login():
 
 def run_bot(r):
 	print "Obtaining comments"
-	for comment in r.subreddit('test').comments(limit=25):
-		if "Wyrd Reconstruction!" in comment.body:
+
+	for comment in r.subreddit('test').comments(limit=10):
+		if "Wyrd Reconstruction!" in comment.body and comment.id not in comments_replied_to and not comment.author == r.user.me():
 			print "\"Wyrd Reconstruction\" found!"
-			print "replied to comment " + comment.id
 			comment.reply("CRIT! 0. Bleed.")
+			print "replied to comment " + comment.id
+
+			comments_replied_to.append(comment.id)
 
 	print "Sleeping for 10 seconds"
 	time.sleep(10)
 
+
+def get_saved_comments():
+	with open("comments_replied_to.txt", "r") as f:
+		comments_replied_to = f.read()
+		comments_replied_to = comments_replied_to.split("\n")
+
+
+
 r = bot_login()
+comments_replied_to = []
 while True:
 	run_bot(r)
 
