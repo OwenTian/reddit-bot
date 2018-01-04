@@ -46,12 +46,14 @@ def get_saved_comments():
 		with open("comments_replied_to.txt", "r") as f:
 			comments_replied_to = f.read()
 			comments_replied_to = comments_replied_to.split("\n")
+			comments_replied_to = filter(None, comments_replied_to)
 
 	return comments_replied_to
 
 
 r = bot_login()
 comments_replied_to = get_saved_comments()
+print comments_replied_to
 while True:
 	run_bot(r)
 
